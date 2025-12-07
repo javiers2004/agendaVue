@@ -2,72 +2,46 @@
 <html lang="es" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Agenda desarrollada con VueJS">
-    <meta name="author" content="e-ghost 2019">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tu-sitio-netlify.app/">
-    <meta property="og:title" content="AgendaVue - Gestión de Contactos">
-    <meta property="og:description" content="Una aplicación SPA simple para gestionar contactos usando VueJS.">
-    <meta property="og:image" content="https://vuejs.org/images/logo.png">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="AgendaVue - Gestión de Contactos">
-    <meta property="twitter:description" content="Una aplicación SPA simple para gestionar contactos usando VueJS.">
+    <meta name="description" content="Agenda desarrollada con VueJS y Firebase">
+    <meta name="author" content="Estudiante">
 
     <title>AgendaVue</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/freelancer.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AgendaVue - Gestión de Contactos">
+    <meta property="og:description" content="Agenda con VueJS, Web Semántica y persistencia en Firebase.">
+    <meta property="og:image" content="https://vuejs.org/images/logo.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AgendaVue - Gestión de Contactos">
+    <meta name="twitter:description" content="Gestión de contactos persistente con VueJS.">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 
     <script type="application/ld+json">
     {
       "@context": "http://schema.org",
       "@type": "WebApplication",
       "name": "AgendaVue",
-      "description": "SPA para gestión de contactos",
-      "applicationCategory": "Productivity",
-      "operatingSystem": "Web Browser"
+      "description": "Gestión de contactos con persistencia en la nube",
+      "applicationCategory": "Productivity"
     }
     </script>
 </head>
 
-<body id="page-top" class="index">
+<body id="page-top">
 
-    <div id="app">
-
+    <div id="app" v-cloak>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
-                <div class="navbar-header page-scroll">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Cambiar navegación</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#page-top">AgendaVue</a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="hidden">
-                            <a href="#page-top"></a>
-                        </li>
-                        <li class="page-scroll">
-                            <a href="#contactos">Contactos</a>
-                        </li>
-                        <li class="page-scroll">
-                            <a href="#nuevo">Añadir contacto</a>
-                        </li>
-                        <li class="page-scroll">
-                            <a href="#about">Acerca de...</a>
-                        </li>
-                    </ul>
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#page-top">Agenda</a>
                 </div>
             </div>
         </nav>
@@ -76,11 +50,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="intro-text">
-                            <span class="name">AgendaVue</span>
-                            <hr class="star-light">
-                            <span class="skills">Agenda básica en Vue + Web Semántica</span>
-                        </div>
+                        <h2>AgendaVue</h2>
+                        <hr>
+                        <span class="skills">Agenda con persistencia en la nube</span>
                     </div>
                 </div>
             </div>
@@ -88,172 +60,83 @@
 
         <section id="contactos">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2>Contactos</h2>
-                        <hr class="star-primary">
-                    </div>
-                </div>
+                <div class="row"><div class="col-lg-12"><h2>Contactos</h2><hr></div></div>
                 
                 <div>
-                    <div class="row">
-                        <div class="col-xs-4"><h4>Nombre</h4></div>
-                        <div class="col-xs-4"><h4>Email</h4></div>
-                        <div class="col-xs-3"><h4>Teléfono</h4></div>
+                    <div class="row table-header">
+                        <div class="col-xs-4">Nombre</div>
+                        <div class="col-xs-4">Email</div>
+                        <div class="col-xs-3">Teléfono</div>
+                        <div class="col-xs-1"></div>
                     </div>
 
-                    <div class="row" v-for="(contacto, index) in contactos" :key="index" itemscope itemtype="http://schema.org/Person">
+                    <div class="row contact-row" 
+                         v-for="contacto in contactos" 
+                         :key="contacto['.key']" 
+                         itemscope itemtype="http://schema.org/Person"
+                         vocab="http://schema.org/" typeof="Person">
+                        
                         <div class="col-xs-4">
-                            <p itemprop="name">{{ contacto.nombre }}</p>
+                            <span itemprop="name" property="name">{{ contacto.nombre }}</span>
                         </div>
                         <div class="col-xs-4">
-                            <p itemprop="email">{{ contacto.email }}</p>
+                            <span itemprop="email" property="email">{{ contacto.email }}</span>
                         </div>
                         <div class="col-xs-3">
-                            <p itemprop="telephone">{{ contacto.telefono }}</p>
+                            <span itemprop="telephone" property="telephone">{{ contacto.telefono }}</span>
                         </div>
                         <div class="col-xs-1">
-                            <button class="btn btn-danger btn-sm" @click="borrarContacto(index)">
-                                <span class="glyphicon glyphicon-remove"></span>
+                            <button class="btn btn-danger btn-sm" @click="borrarContacto(contacto)">
+                                <i class="fa fa-trash"></i>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div v-if="contactos.length === 0">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <p class="text-center">No se ha encontrado ningún contacto.</p>
-                        </div>
-                    </div>
+                <div v-if="contactos.length === 0" class="row text-center" style="margin-top:20px;">
+                    <div class="col-xs-12"><p>No hay contactos o cargando datos...</p></div>
                 </div>
                 
-                <div class="row text-center" style="margin-top: 20px;">
-                    <p>Total de contactos: {{ contactos.length }}</p>
+                <div class="row text-center" style="margin-top:20px;">
+                    <p>Total en la nube: {{ contactos.length }}</p>
                 </div>
             </div>
         </section>
 
-        <section id="nuevo">
+        <section id="nuevo" style="background-color:#f4f4f4;">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2>Añadir contacto</h2>
-                        <hr class="star-primary">
-                    </div>
-                </div>
+                <div class="row"><div class="col-lg-12"><h2>Añadir contacto</h2><hr></div></div>
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
-                        <form name="sentMessage" id="contactForm" @submit.prevent="addContacto" novalidate>
-                            <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label>Nombre</label>
-                                    <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nuevoContacto.nombre" required>
-                                </div>
+                        <form @submit.prevent="addContacto">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" v-model="nuevoContacto.nombre" required>
                             </div>
-                            <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" placeholder="Email" id="email" v-model="nuevoContacto.email" required>
-                                </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" v-model="nuevoContacto.email" required>
                             </div>
-                            <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label>Teléfono</label>
-                                    <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="nuevoContacto.telefono" required>
-                                </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="tel" class="form-control" v-model="nuevoContacto.telefono" required>
                             </div>
                             <br>
-                            <div id="success"></div>
-                            <div class="row">
-                                <div class="form-group col-xs-12">
-                                    <button type="submit" class="btn btn-success btn-lg">Añadir</button>
-                                </div>
-                            </div>
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Guardar en Firebase</button>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
-
-        <footer class="text-center">
-            <div class="footer-above">
-                <div class="container">
-                    <div class="row">
-                        <div class="footer-col col-md-12">
-                            <h3>Acerca de</h3>
-                            <p>AgendaVue es un proyecto simple en VueJS creado para la práctica.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-below">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            Copyleft &copy; e-ghost 2019
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-    </div> <div class="scroll-top page-scroll visible-xs visible-sm">
-        <a class="btn btn-primary" href="#page-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
+        
+        <footer><div class="container">Copyleft &copy; 2024</div></footer>
     </div>
 
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
-    <script src="js/freelancer.js"></script>
-    
-    <script src="js/vue.js"></script>   
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/vuefire@1.4.5/dist/vuefire.js"></script>
 
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                // Array de contactos inicial
-                contactos: [
-                    { nombre: 'John Doe', email: 'john.doe@deusto.es', telefono: '555555555' }
-                ],
-                // Objeto para el nuevo contacto
-                nuevoContacto: {
-                    nombre: '',
-                    email: '',
-                    telefono: ''
-                }
-            },
-            methods: {
-                addContacto: function() {
-                    // Validación simple
-                    if(this.nuevoContacto.nombre && this.nuevoContacto.email && this.nuevoContacto.telefono) {
-                        // Añadimos una copia del objeto al array
-                        this.contactos.push({
-                            nombre: this.nuevoContacto.nombre,
-                            email: this.nuevoContacto.email,
-                            telefono: this.nuevoContacto.telefono
-                        });
-                        
-                        // Reseteamos el formulario
-                        this.nuevoContacto.nombre = '';
-                        this.nuevoContacto.email = '';
-                        this.nuevoContacto.telefono = '';
-                    } else {
-                        alert("Por favor, rellena todos los campos");
-                    }
-                },
-                borrarContacto: function(index) {
-                    // Borramos 1 elemento en la posición 'index'
-                    this.contactos.splice(index, 1);
-                }
-            }
-        });
-    </script>
-
+    <script src="app.js"></script>
 </body>
 </html>
